@@ -1,134 +1,122 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+        <link href="{% static 'css/detail.css'%}" rel="stylesheet" />
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Movie Reviews</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Search movies now in theater</p>
+                    <p>
+                        <form action="{% url 'blog:search' %}" method="GET">
+                            <input placeholder="영화 제목" type="search" name="keyword">
+                            <button class="btn btn-outline-light" type="submit">검색</button>
+                        </form>
+                    </p>
+                </div>
+            </div>
+        </header>
+
         <!-- Product section-->
         <section class="py-5">
-            <div class="container px-4 px-lg-5 my-5">
+            <div class="container px-4 px-lg-5 my-5" style="width:60%;">
                 <div class="row gx-4 gx-lg-5 align-items-center">
-                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..." /></div>
+                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{movie.poster_url}}" alt="..."/></div>
                     <div class="col-md-6">
-                        <div class="small mb-1">SKU: BST-498</div>
-                        <h1 class="display-5 fw-bolder">Shop item template</h1>
+                        <div class="small mb-1"></div>
+                        <h1 class="display-5 fw-bolder">{{movie.title_kor}}</h1>
                         <div class="fs-5 mb-5">
-                            <span class="text-decoration-line-through">$45.00</span>
-                            <span>$40.00</span>
+                            <span class="text-decoration-line-through"></span>
+                            <span>{{movie.title_eng}}</span>
                         </div>
-                        <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium at dolorem quidem modi. Nam sequi consequatur obcaecati excepturi alias magni, accusamus eius blanditiis delectus ipsam minima ea iste laborum vero?</p>
-                        <div class="d-flex">
-                            <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-                            <button class="btn btn-outline-dark flex-shrink-0" type="button">
-                                <i class="bi-cart-fill me-1"></i>
-                                Add to cart
-                            </button>
+                        <p id="light_summary" class="lead">{{movie.light_summary}}...</p>
+                        <hr>
+                        <br>
+                        <div id="detail-content-box1">
+                            <div class="detail-content-subbox1"><div class="detail-content-1">장르</div><span>   {{movie.genre}}</span></div>
+                            <br>
+                            <div class="detail-content-subbox1"><div class="detail-content-1">상영 시간</div><span>   {{movie.showtimes}}</span></div>
+                        </div>    
+                            <br>
+                        <div id="detail-content-box1">
+                            <div class="detail-content-subbox1"><div class="detail-content-1">상영 등급</div><span>   {{movie.rate}}</span></div>
+                            <br>
+                            <div class="detail-content-subbox1"><div class="detail-content-1">개봉일</div><span>   {{movie.release_date}}</span></div>
+                        </div>
+                            <br>
+                        <hr>
+                        <div id="detail-content-box2">
+                            <div class="detail-content-subbox2"><div class="detail-content-2">관람객 평점</div><span> {{movie.rating_aud}}</span></div>
+                            <br>
+                            <div class="detail-content-subbox2"><div class="detail-content-2">평론가 평점</div><span>   {{movie.rating_cri}}</span></div>
+                            <br>
+                            <div class="detail-content-subbox2"><div class="detail-content-2">네티즌 평점</div><span>   {{movie.rating_net}}</span></div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
         <!-- Related items section-->
-        <section class="py-5 bg-light">
-            <div class="container px-4 px-lg-5 mt-5">
-                <h2 class="fw-bolder mb-4">Related products</h2>
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <section class="py-5 bg-light" >
+            <div class="container px-4 px-lg-5 mt-5"  style="width: 60%; height:30%;">
+                <h2 class="fw-bolder mb-4">Staffs</h2>
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 "  >
+                    {% for staff in movie.staffs.all %}
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                            <img class="card-img-top" src="{{staff.image_url}}" alt="..." />
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">Fancy Product</h5>
+                                    <h5 class="fw-bolder">{{staff.role}}</h5>
                                     <!-- Product price-->
-                                    $40.00 - $80.00
+                                    {{staff.name}}
                                 </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
                             </div>
                         </div>
                     </div>
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Sale badge-->
-                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                            <!-- Product image-->
-                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Special Item</h5>
-                                    <!-- Product reviews-->
-                                    <div class="d-flex justify-content-center small text-warning mb-2">
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                    </div>
-                                    <!-- Product price-->
-                                    <span class="text-muted text-decoration-line-through">$20.00</span>
-                                    $18.00
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Sale badge-->
-                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                            <!-- Product image-->
-                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Sale Item</h5>
-                                    <!-- Product price-->
-                                    <span class="text-muted text-decoration-line-through">$50.00</span>
-                                    $25.00
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Product image-->
-                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Popular Item</h5>
-                                    <!-- Product reviews-->
-                                    <div class="d-flex justify-content-center small text-warning mb-2">
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                    </div>
-                                    <!-- Product price-->
-                                    $40.00
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </section>
+        <section class="py-5 bg-secondary" >
+        {% if user.is_authenticated %}
+            <div class="comment-body">
+                <div id="comment-title"><span>Comments</span></div>
+                <br>
+                <form method="POST" action="{% url 'blog:newreply' %}">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{movie.id}}" name="movie" />
+                    <input type="hidden" value="{{user.username}}" name="user" />
+                    <input id="put_comments" type="text" name="comment_body" />
+                    <button type="submit" class="btn btn-secondary" id="comment-btn">작성</button>
+                </form>
+            </div>
+            <div>
+            </section>
+            <br>
+            <div class="comment-body2">
+                {% for comment in movie.comments.all %}
+
+                <div class="comment-box">
+
+                        <div class="userbox"><img src="{% static 'img/github.png' %}" alt="사람 상반신 이미지" id="user-img"><span class="username">{{comment.user.username}}</span></div>
+                        <div class="comment">{{comment.comment_body}}</div>
+                    {% if comment.user == user %}
+                    <a href="{% url 'blog:replydelete' comment.id %}"
+                    ><input type="button" value="X"
+                    /></a>
+                    {% endif %}
+
+                </div>
+                <div class="line"></div>
+                <br>
+                
+                {% endfor %}
+            </div>
+            </div>
+        {% endif %}
+
         {% endblock %}

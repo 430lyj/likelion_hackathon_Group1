@@ -1,22 +1,40 @@
 {% extends 'base.html' %}
+{% load mathfilters %}
 {% load static %}
 {% load mathfilters %}
 {% block content %}
 {% autoescape off %}
         <!-- Section-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Movie Reviews</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Search movies now in theater</p>
+                    <p>
+                        <form action="{% url 'blog:search' %}" method="GET">
+                            <input placeholder="영화 제목" type="search" name="keyword">
+                            <button class="btn btn-outline-light" type="submit">검색</button>
+                        </form>
+                    </p>
+                </div>
+            </div>
+        </header>
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    {% for movie in movies %}
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="{{movies.0.poster_url}}" alt="..." />
+
+                            <img class="card-img-top" src="{{movie.poster_url}}" alt="..." />
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">{{movies.0.title_kor}}</h5>
+                                    <h5 class="fw-bolder">{{movie.title_kor}}</h5>
                                     <!-- Product price-->
+<<<<<<< HEAD
                                     <div class="d-flex justify-content-center small text-warning mb-2 review">
 
                                         {%if movies.0.rating_aud|add:0 > 2 %}
@@ -40,10 +58,36 @@
                                        
                                         {{movies.0.rating_aud|sub:0}}
                                     </div>
+=======
+                                    {% if movie.rating_aud|sub:0 > 0 %}
+                                        <div class="d-flex justify-content-center small text-warning mb-2">
+                                            {% if movie.int_rating_aud >= 2 %}
+                                            <div class="bi-star-fill"></div>
+                                            {%endif%}
+                                            {% if movie.int_rating_aud >= 4 %}
+                                            <div class="bi-star-fill"></div>
+                                            {%endif%}
+                                            {% if movie.int_rating_aud >= 6 %}
+                                            <div class="bi-star-fill"></div>
+                                            {%endif%}
+                                            {% if movie.int_rating_aud >= 8 %}
+                                            <div class="bi-star-fill"></div>
+                                            {%endif%}
+                                            {% if movie.int_rating_aud >= 10 %}
+                                            <div class="bi-star-fill"></div>
+                                            {%endif%}
+                                        </div>
+                                        {{movie.rating_aud|sub:0}} / 10
+                                    {% else %}
+                                        No Rating
+                                    {% endif %}
+                                
+>>>>>>> 9ca5d614427c61f9e452714016d4c821eae05cb6
                                 </div>
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+<<<<<<< HEAD
                                 <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'blog:detail' movies.0.id %}">상세 정보</a></div>
                             </div>
                         </div>
@@ -218,19 +262,37 @@
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'blog:detail' movies.7.id %}">상세 정보</a></div>
+=======
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'blog:detail' movie.id %}">상세 정보</a></div>
+>>>>>>> 9ca5d614427c61f9e452714016d4c821eae05cb6
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
+                <div class="paginations" style="text-align: center;">
+            {%if keyword %}
                 {% if movies.has_previous %}
-                    <a href="?page=1">◀️◀️</a>
-                    <a href="?page={{movies.previous_page_number}}">◀️</a>
+                    <a href="?page=1&keyword={{keyword}}" style="text-decoration: none; color:black;">◀️◀️</a>
+                    <a href="?page={{movies.previous_page_number}}&keyword={{keyword}}" style="text-decoration: none; color:black;">◀️</a>
                 {% endif %}
                 {{movies.number}} of {{movies.paginator.num_pages}}
                 {% if movies.has_next %}
-                    <a href="?page={{movies.next_page_number}}">▶️</a>
-                    <a href="?page={{movies.paginator.num_pages}}">▶️▶️</a>
+                    <a href="?page={{movies.next_page_number}}&keyword={{keyword}}" style="text-decoration: none; color:black;">▶️</a>
+                    <a href="?page={{movies.paginator.num_pages}}&keyword={{keyword}}" style="text-decoration: none; color:black;">▶️▶️</a>
                 {% endif %}
+            {%else%}
+                {% if movies.has_previous %}
+                    <a href="?page=1" style="text-decoration: none; color:black;">◀️◀️</a>
+                    <a href="?page={{movies.previous_page_number}}" style="text-decoration: none; color:black;">◀️</a>
+                {% endif %}
+                {{movies.number}} of {{movies.paginator.num_pages}}
+                {% if movies.has_next %}
+                    <a href="?page={{movies.next_page_number}}" style="text-decoration: none; color:black;">▶️</a>
+                    <a href="?page={{movies.paginator.num_pages}}" style="text-decoration: none; color:black;">▶️▶️</a>
+                {% endif %}
+            {%endif%}
+                </div>
             </div>
         </section>
         <!-- Footer-->

@@ -48,7 +48,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'account',
     'blog',
+<<<<<<< HEAD
     'mathfilters',
+=======
+    'mathfilters'
+>>>>>>> 9ca5d614427c61f9e452714016d4c821eae05cb6
 ]
 
 MIDDLEWARE = [
